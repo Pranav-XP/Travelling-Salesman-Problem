@@ -97,7 +97,7 @@ public class Main {
         List<Integer> gaCounter = new ArrayList<>();
 
 
-        for (int i = 0;i<5;i++){
+        for (int i = 0;i<31;i++){
             GeneticAlgorithm ga  = new GeneticAlgorithm(test20);
             List<Integer> solution = ga.solve();
 
