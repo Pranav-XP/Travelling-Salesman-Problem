@@ -172,10 +172,10 @@ public class Main {
                     testAlgorithms(ftv33);
                     break;
                 case 7:
-                    testAlgorithms(ft70);
+                    testAlgorithms(ft53);
                     break;
                 case 8:
-                    testAlgorithms(ft53);
+                    testAlgorithms(ft70);
                     break;
                 case 9:
                     testAlgorithms(ftv170);
