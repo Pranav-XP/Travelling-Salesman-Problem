@@ -88,10 +88,11 @@ public class AlgorithmRace {
     }
 
     private void runHeldKarpAlgorithm(int[][] matrix) throws InterruptedException {
-        for (int i = 0;i<10;i++){
+        for (int i = 0;i<11;i++){
             int cost = HeldKarp.solve(matrix);
             heldKarpSeries.add(i,cost);
             System.out.println("Optimal Cost: " +cost);
+            System.out.println();
         }
         heldKarpStopwatch.stop();
 
@@ -104,14 +105,13 @@ public class AlgorithmRace {
     }
 
     private void runGeneticAlgorithm(GeneticAlgorithm ga) throws InterruptedException {
-        // Replace this with your actual Genetic Algorithm implementation
-        // Simulate algorithm work
         for (int i = 0;i<11;i++){
             List<Integer> solution = ga.solve();
             int cost = ga.evaluate(solution);
             geneticAlgorithmSeries.add(i,cost);
             System.out.println("GA: Optimal Tour: " + solution);
             System.out.println("GA Total Cost: " + cost);
+            System.out.println();
         }
         geneticAlgorithmStopwatch.stop();
 
