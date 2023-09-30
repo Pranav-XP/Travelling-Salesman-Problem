@@ -97,7 +97,7 @@ public class Main {
         List<Integer> gaCounter = new ArrayList<>();
 
 
-        for (int i = 0;i<31;i++){
+        for (int i = 0;i<5;i++){
             GeneticAlgorithm ga  = new GeneticAlgorithm(test20);
             List<Integer> solution = ga.solve();
 
@@ -113,8 +113,8 @@ public class Main {
             System.out.println("GA Total Cost: " + ga.evaluate(solution));
             System.out.println();
 
-            heldKarpCounter.add(HeldKarp.getMemoWrite());
-            gaCounter.add(ga.getCounter());
+            heldKarpCounter.add(HeldKarp.getCounter());
+            gaCounter.add(ga.getMAX_GENERATIONS());
         }
         // Find minimum, maximum, and average
         int heldKarpMin = Collections.min(heldKarpCounter);

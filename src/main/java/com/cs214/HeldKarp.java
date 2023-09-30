@@ -7,14 +7,14 @@ import java.util.List;
 
 public class HeldKarp {
 
-    private static int memoWrite;
+    private static int counter;
 
-    public static int getMemoWrite() {
-        return memoWrite;
+    public static int getCounter() {
+        return counter;
     }
 
-    public static void setMemoWrite(int memoWrite) {
-        HeldKarp.memoWrite = memoWrite;
+    public static void setCounter(int counter) {
+        HeldKarp.counter = counter;
     }
 
     public static int solve(int[][] distanceMatrix) {
@@ -47,7 +47,7 @@ public class HeldKarp {
                             if (newDistance < dp[mask][u]) {
                                 dp[mask][u] = newDistance;
                                 parent[mask][u] = v;
-                                memoWrite++;
+
                             }
                         }
                     }
@@ -59,6 +59,7 @@ public class HeldKarp {
         int minTourLength = Integer.MAX_VALUE;
         int endingCity = -1;
         for (int u = 1; u < numCities; u++) {
+            counter++;
             int tourLength = dp[numStates - 1][u] + distanceMatrix[u][0];
             if (tourLength < minTourLength) {
                 minTourLength = tourLength;
