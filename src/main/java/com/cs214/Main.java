@@ -4,27 +4,208 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    //READ TEST CASES AND STORE IN 2D PRIMITIVE ARRAY
+    public  static int[][] ft53 = readDistanceMatrix("src/main/resources/ft53.atsp");
+    public static int[][] ft70 = readDistanceMatrix("src/main/resources/ft70.atsp");
+    public static int[][] ftv33 = readDistanceMatrix("src/main/resources/ftv33.atsp");
+    public static int[][] ftv170 = readDistanceMatrix("src/main/resources/ftv170.atsp");
+    public static int[][] rbg443 = readDistanceMatrix("src/main/resources/rbg443.atsp");
+    public static int[][] br17 = readDistanceMatrix("src/main/resources/br17.atsp");
+    public static int[][] test4 = readDistanceMatrix("src/main/resources/test4.atsp");
+    public static int[][] test6 = readDistanceMatrix("src/main/resources/test6.atsp");
+    public static int[][] test20 = readDistanceMatrix("src/main/resources/test20.atsp");
+    public static int[][] test15 = readDistanceMatrix("src/main/resources/p01_d.tsp");
 
     public static void main(String[] args) {
-        int[][] ft53 = readDistanceMatrix("src/main/resources/ft53.atsp");
-        int[][] ft70 = readDistanceMatrix("src/main/resources/ft70.atsp");
-        int[][] ftv33 = readDistanceMatrix("src/main/resources/ftv33.atsp");
-        int[][] ftv170 = readDistanceMatrix("src/main/resources/ftv170.atsp");
-        int[][] rbg443 = readDistanceMatrix("src/main/resources/rbg443.atsp");
-        int[][] br17 = readDistanceMatrix("src/main/resources/br17.atsp");
-        int[][] test = readDistanceMatrix("src/main/resources/test20.atsp");
 
-        printMatrix(test); //For testing and verification, test data can be printed
-        GeneticAlgorithm ga  = new GeneticAlgorithm(test);
+        Scanner scanner = new Scanner(System.in);
+
+        int choice;
+        do {
+            displayMenu();
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (choice) {
+                case 1:
+                    testAlgorithmsMenu(scanner);
+                    break;
+                case 2:
+                    runEmpiricalAnalysis();
+                    break;
+                case 3:
+                    System.out.println("Exiting the program. Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+
+        } while (choice != 3);
+
+        scanner.close();
+
+    }
+
+    private static void displayMenu() {
+        System.out.println("Menu:");
+        System.out.println("1. Test Algorithms");
+        System.out.println("2. Run Empirical Analysis");
+        System.out.println("3. Exit");
+    }
+
+    private static void testAlgorithms(int[][] matrix) {
+        System.out.println();
+        System.out.println("TEST CASE SIZE: "+matrix.length+" cities");
+        printMatrix(matrix); //For testing and verification, test data can be printed
+        System.out.println();
+        GeneticAlgorithm ga  = new GeneticAlgorithm(matrix);
         List<Integer> solution = ga.solve();
 
+        if(matrix.length>300){
+            System.out.println("ABORTING: Held Karp Heap Memory will be exceeded for this Size");
+            System.out.println();
+            System.out.println("Genetic Algorithm Results");
+            System.out.println("--------------------------------------------------------------------------------");
+            System.out.println("GA: Optimal Tour: " + solution);
+            System.out.println("GA Total Cost: " + ga.evaluate(solution));
+            System.out.println();
+            return;
+        }
 
+        System.out.println("Held Karp Algorithm Results");
+        System.out.println("--------------------------------------------------------------------------------");
+        int optimalTour = HeldKarp.solve(matrix);
+        System.out.println("Optimal Cost: " +optimalTour);
         System.out.println();
+
+        System.out.println("Genetic Algorithm Results");
+        System.out.println("--------------------------------------------------------------------------------");
         System.out.println("GA: Optimal Tour: " + solution);
         System.out.println("GA Total Cost: " + ga.evaluate(solution));
+        System.out.println();
 
-        int optimalTour = HeldKarp.solve(test);
-        System.out.println("Optimal Cost: " +optimalTour);
+    }
+
+    private static void runEmpiricalAnalysis() {
+        System.out.println();
+        System.out.println("TEST CASE SIZE: "+test20.length+" cities\n");
+        printMatrix(test20); //For testing and verification, test data can be printed
+        System.out.println();
+        System.out.println("Running empirical analysis...\n");
+        List<Integer> heldKarpCounter = new ArrayList<>();
+        List<Integer> gaCounter = new ArrayList<>();
+
+
+        for (int i = 0;i<31;i++){
+            GeneticAlgorithm ga  = new GeneticAlgorithm(test20);
+            List<Integer> solution = ga.solve();
+
+            System.out.println("Held Karp Algorithm Result "+i);
+            System.out.println("--------------------------------------------------------------------------------");
+            int optimalTour = HeldKarp.solve(test20);
+            System.out.println("Optimal Cost: " +optimalTour);
+            System.out.println();
+
+            System.out.println("Genetic Algorithm Result "+i);
+            System.out.println("--------------------------------------------------------------------------------");
+            System.out.println("GA: Optimal Tour: " + solution);
+            System.out.println("GA Total Cost: " + ga.evaluate(solution));
+            System.out.println();
+
+            heldKarpCounter.add(HeldKarp.getMemoWrite());
+            gaCounter.add(ga.getCounter());
+        }
+        // Find minimum, maximum, and average
+        int heldKarpMin = Collections.min(heldKarpCounter);
+        int heldKarpMax = Collections.max(heldKarpCounter);
+        double heldKarpAverage = heldKarpCounter.stream().mapToInt(Integer::intValue).average().orElse(0);
+
+        // Output the results
+        System.out.println("HELD-KARP ANALYSIS");
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("Minimum NFC: " + heldKarpMin);
+        System.out.println("Maximum NFC: " + heldKarpMax);
+        System.out.println("Average NFC: " + heldKarpAverage);
+        System.out.println();
+
+        // Find minimum, maximum, and average
+        int gaMin = Collections.min(gaCounter);
+        int gaMax = Collections.max(gaCounter);
+        double gaAverage = gaCounter.stream().mapToInt(Integer::intValue).average().orElse(0);
+
+        // Output the results
+        System.out.println("GENETIC ALGORITHM ANALYSIS");
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("Best NFC: " + gaMin);
+        System.out.println("Maximum NFC: " + gaMax);
+        System.out.println("Average NFC: " + gaAverage);
+        System.out.println();
+
+    }
+
+    private static void testAlgorithmsMenu(Scanner scanner) {
+        int testChoice;
+        do {
+            displayTestAlgorithmsMenu();
+            System.out.print("Enter your test choice (1-6): ");
+            testChoice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (testChoice) {
+                case 1:
+                    testAlgorithms(test4);
+                    break;
+                case 2:
+                    testAlgorithms(test6);
+                    break;
+                case 3:
+                    testAlgorithms(test15);
+                    break;
+                case 4:
+                    testAlgorithms(br17);
+                    break;
+                case 5:
+                    testAlgorithms(test20);
+                    break;
+                case 6:
+                    testAlgorithms(ftv33);
+                    break;
+                case 7:
+                    testAlgorithms(ft70);
+                    break;
+                case 8:
+                    testAlgorithms(ft53);
+                    break;
+                case 9:
+                    testAlgorithms(ftv170);
+                    break;
+                case 10:
+                    testAlgorithms(rbg443);
+                    break;
+                case 11:
+                    System.out.println("Returning to Main Menu");
+                    break;
+                default:
+                    System.out.println("Invalid test choice. Please enter a valid option.");
+            }
+
+        } while (testChoice != 11);
+    }
+
+    private static void displayTestAlgorithmsMenu() {
+        System.out.println("Test Algorithms Menu:");
+        System.out.println("1. 4 cities");
+        System.out.println("2. 6 cities");
+        System.out.println("3. 15 cities");
+        System.out.println("4. 17 cities");
+        System.out.println("5. 20 cities");
+        System.out.println("6. 33 cities");
+        System.out.println("7. 53 cities");
+        System.out.println("8. 70 cities");
+        System.out.println("9. 170 cities");
+        System.out.println("10. 443 cities");
+        System.out.println("11. Return to Main Menu");
     }
 
     public static int[][] readDistanceMatrix(String fileName){

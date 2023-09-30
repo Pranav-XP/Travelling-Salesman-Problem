@@ -7,6 +7,16 @@ import java.util.List;
 
 public class HeldKarp {
 
+    private static int memoWrite;
+
+    public static int getMemoWrite() {
+        return memoWrite;
+    }
+
+    public static void setMemoWrite(int memoWrite) {
+        HeldKarp.memoWrite = memoWrite;
+    }
+
     public static int solve(int[][] distanceMatrix) {
         int numCities = distanceMatrix.length;
         int numStates = 1 << numCities; // Total number of states (2^n)
@@ -37,6 +47,7 @@ public class HeldKarp {
                             if (newDistance < dp[mask][u]) {
                                 dp[mask][u] = newDistance;
                                 parent[mask][u] = v;
+                                memoWrite++;
                             }
                         }
                     }

@@ -8,7 +8,16 @@ import java.util.Random;
 public class GeneticAlgorithm {
     private static final int POPULATION_SIZE = 100;
     private static final double MUTATION_RATE = 0.01;
-    private static final int MAX_GENERATIONS = 1000;
+    private static final int MAX_GENERATIONS = (int) (1500 * Math.random());
+    private int counter;
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
 
     private int[][] distanceMatrix;
     private int numCities;
@@ -22,6 +31,7 @@ public class GeneticAlgorithm {
         List<List<Integer>> population = initializePopulation();
 
         for (int generation = 0; generation < MAX_GENERATIONS; generation++) {
+            counter++;
             List<List<Integer>> offspring = generateOffspring(population);
             population.addAll(offspring);
             population = selectNextGeneration(population);
