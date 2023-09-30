@@ -65,7 +65,7 @@ public class Main {
         if(matrix.length>300){
             System.out.println("ABORTING: Held Karp Heap Memory will be exceeded for this Size");
             System.out.println();
-            System.out.println("Genetic Algorithm Results");
+            System.out.println("Genetic Algorithm Results " +matrix.length);
             System.out.println("--------------------------------------------------------------------------------");
             System.out.println("GA: Optimal Tour: " + solution);
             System.out.println("GA Total Cost: " + ga.evaluate(solution));
@@ -73,13 +73,13 @@ public class Main {
             return;
         }
 
-        System.out.println("Held Karp Algorithm Results");
+        System.out.println("Held Karp Algorithm Results "+matrix.length);
         System.out.println("--------------------------------------------------------------------------------");
         int optimalTour = HeldKarp.solve(matrix);
         System.out.println("Optimal Cost: " +optimalTour);
         System.out.println();
 
-        System.out.println("Genetic Algorithm Results");
+        System.out.println("Genetic Algorithm Results "+ matrix.length);
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("GA: Optimal Tour: " + solution);
         System.out.println("GA Total Cost: " + ga.evaluate(solution));
