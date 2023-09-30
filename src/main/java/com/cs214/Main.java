@@ -148,7 +148,7 @@ public class Main {
         int testChoice;
         do {
             displayTestAlgorithmsMenu();
-            System.out.print("Enter your test choice (1-6): ");
+            System.out.print("Enter your test choice (1-11): ");
             testChoice = scanner.nextInt();
             scanner.nextLine();
 
